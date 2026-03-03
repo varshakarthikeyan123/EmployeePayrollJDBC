@@ -118,4 +118,42 @@ public class EmployeePayrollDBService {
                     "Error updating salary using PreparedStatement", e);
         }
     }
+    /**
+     * UC5 - Retrieve Employees whose start_date
+     * falls between given date range
+     */
+    public void getEmployeesByDateRange(String startDate, String endDate)
+            throws PayrollException {
+
+        // SQL query using BETWEEN
+        String query = "SELECT * FROM employee_payroll " +
+                "WHERE start_date BETWEEN ? AND ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(query)) {
+
+            // Set date parameters
+            preparedStatement.setString(1, startDate);
+            preparedStatement.setString(2, endDate);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            System.out.println("Employees between " + startDate +
+                    " and " + endDate + ":");
+
+            while (resultSet.next()) {
+                System.out.println(
+                        resultSet.getInt("id") + " " +
+                                resultSet.getString("name") + " " +
+                                resultSet.getDouble("salary") + " " +
+                                resultSet.getDate("start_date")
+                );
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollException(
+                    "Error retrieving employees by date range", e);
+        }
+    }
 }

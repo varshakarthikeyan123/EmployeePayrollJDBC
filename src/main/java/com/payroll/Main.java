@@ -1,7 +1,7 @@
 package com.payroll;
 
 /**
- * Main class for UC4 testing
+ * Main class for UC5 testing
  */
 public class Main {
 
@@ -10,10 +10,7 @@ public class Main {
         EmployeePayrollDBService service =
                 new EmployeePayrollDBService();
 
-        // Update salary of June safely
-        service.updateSalaryUsingPreparedStatement("June", 8000000);
-
-        // Display updated records
-        service.readData().forEach(System.out::println);
+        // Example: Retrieve employees between 2018 and today
+        service.getEmployeesByDateRange("2018-01-01", "2025-12-31");
     }
 }
