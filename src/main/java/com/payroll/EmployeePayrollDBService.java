@@ -156,4 +156,42 @@ public class EmployeePayrollDBService {
                     "Error retrieving employees by date range", e);
         }
     }
+    /**
+     * UC6 - Perform Aggregate Functions
+     * Calculates SUM, AVG and COUNT of salary grouped by gender
+     */
+    public void getSalaryStatisticsByGender() throws PayrollException {
+
+        // SQL query with aggregate functions
+        String query = "SELECT gender, SUM(salary) AS totalSalary, " +
+                "AVG(salary) AS averageSalary, " +
+                "COUNT(*) AS employeeCount " +
+                "FROM employee_payroll GROUP BY gender";
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            System.out.println("Salary Statistics Based On Gender:");
+            System.out.println("-----------------------------------");
+
+            while (resultSet.next()) {
+
+                String gender = resultSet.getString("gender");
+                double totalSalary = resultSet.getDouble("totalSalary");
+                double averageSalary = resultSet.getDouble("averageSalary");
+                int count = resultSet.getInt("employeeCount");
+
+                System.out.println("Gender: " + gender);
+                System.out.println("Total Salary: " + totalSalary);
+                System.out.println("Average Salary: " + averageSalary);
+                System.out.println("Employee Count: " + count);
+                System.out.println("-----------------------------------");
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollException(
+                    "Error retrieving aggregate salary statistics", e);
+        }
+    }
 }
