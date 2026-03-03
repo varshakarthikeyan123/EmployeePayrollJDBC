@@ -1,7 +1,7 @@
 package com.payroll;
 
 /**
- * Main class for UC3 testing
+ * Main class for UC4 testing
  */
 public class Main {
 
@@ -10,10 +10,10 @@ public class Main {
         EmployeePayrollDBService service =
                 new EmployeePayrollDBService();
 
-        // Update salary of Bill
-        service.updateSalary("Bill", 7000000);
+        // Update salary of June safely
+        service.updateSalaryUsingPreparedStatement("June", 8000000);
 
-        // Display updated data
+        // Display updated records
         service.readData().forEach(System.out::println);
     }
 }

@@ -86,4 +86,36 @@ public class EmployeePayrollDBService {
             throw new PayrollException("Error updating salary using Statement", e);
         }
     }
+    /**
+     * UC4 - Update Employee Salary using PreparedStatement
+     * This method prevents SQL Injection and is safer.
+     */
+    public void updateSalaryUsingPreparedStatement(String name, double salary)
+            throws PayrollException {
+
+        // SQL query using placeholders
+        String query = "UPDATE employee_payroll SET salary = ? WHERE name = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(query)) {
+
+            // Set values for placeholders
+            preparedStatement.setDouble(1, salary);
+            preparedStatement.setString(2, name);
+
+            // Execute update
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Salary updated successfully using PreparedStatement!");
+            } else {
+                System.out.println("Employee not found.");
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollException(
+                    "Error updating salary using PreparedStatement", e);
+        }
+    }
 }
