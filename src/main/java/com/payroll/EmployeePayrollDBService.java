@@ -194,4 +194,50 @@ public class EmployeePayrollDBService {
                     "Error retrieving aggregate salary statistics", e);
         }
     }
+    /**
+     * UC7 - Add new employee to payroll table
+     */
+    public EmployeePayrollData addEmployee(String name,
+                                           double salary,
+                                           String startDate,
+                                           String gender)
+            throws PayrollException {
+
+        String query = "INSERT INTO employee_payroll " +
+                "(name, salary, start_date, gender) " +
+                "VALUES (?, ?, ?, ?)";
+
+        try (Connection connection = getConnection();
+             PreparedStatement ps =
+                     connection.prepareStatement(query,
+                             Statement.RETURN_GENERATED_KEYS)) {
+
+            // Set values
+            ps.setString(1, name);
+            ps.setDouble(2, salary);
+            ps.setString(3, startDate);
+            ps.setString(4, gender);
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new PayrollException("Insertion failed!", null);
+            }
+
+            // Get auto-generated ID
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+
+                System.out.println("Employee added successfully!");
+
+                return new EmployeePayrollData(id, name, salary);
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollException("Error adding employee", e);
+        }
+
+        return null;
+    }
 }

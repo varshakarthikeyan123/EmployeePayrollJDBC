@@ -1,7 +1,7 @@
 package com.payroll;
 
 /**
- * Main class for UC6 testing
+ * Main class for UC7 testing
  */
 public class Main {
 
@@ -10,6 +10,12 @@ public class Main {
         EmployeePayrollDBService service =
                 new EmployeePayrollDBService();
 
-        service.getSalaryStatisticsByGender();
+        EmployeePayrollData employee =
+                service.addEmployee("Terisa",
+                        3000000,
+                        "2026-03-03",
+                        "F");
+
+        System.out.println(employee);
     }
 }
