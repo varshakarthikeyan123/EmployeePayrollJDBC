@@ -1,8 +1,8 @@
 package com.payroll;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * UC1 - Establish Payroll Database Connection
@@ -26,4 +26,36 @@ public class EmployeePayrollDBService {
             e.printStackTrace();
         }
     }
+    /**
+     * UC2 - Retrieve Employee Payroll Data from Database
+     */
+    public List<EmployeePayrollData> readData() throws PayrollException {
+
+        List<EmployeePayrollData> employeeList = new ArrayList<>();
+
+        String query = "SELECT id, name, salary FROM employee_payroll";
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            // Iterate through result set
+            while (resultSet.next()) {
+
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                double salary = resultSet.getDouble("salary");
+
+                EmployeePayrollData employee =
+                        new EmployeePayrollData(id, name, salary);
+
+                employeeList.add(employee);
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollException("Error retrieving employee payroll data", e);
+        }
+
+        return employeeList;
+        }
 }
