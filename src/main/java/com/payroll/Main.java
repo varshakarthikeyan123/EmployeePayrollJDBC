@@ -1,9 +1,7 @@
 package com.payroll;
 
-import java.util.List;
-
 /**
- * Main class for UC2 testing
+ * Main class for UC3 testing
  */
 public class Main {
 
@@ -12,9 +10,10 @@ public class Main {
         EmployeePayrollDBService service =
                 new EmployeePayrollDBService();
 
-        List<EmployeePayrollData> employees = service.readData();
+        // Update salary of Bill
+        service.updateSalary("Bill", 7000000);
 
-        // Print employee list
-        employees.forEach(System.out::println);
+        // Display updated data
+        service.readData().forEach(System.out::println);
     }
 }

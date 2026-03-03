@@ -58,4 +58,32 @@ public class EmployeePayrollDBService {
 
         return employeeList;
         }
+
+    /**
+     * UC3 - Update Employee Salary using Statement
+     * This method updates salary of an employee based on name
+     */
+    public void updateSalary(String name, double salary) throws PayrollException {
+
+        // SQL query to update salary
+        String query = "UPDATE employee_payroll SET salary = "
+                + salary + " WHERE name = '" + name + "'";
+
+        try (Connection connection = getConnection();
+             Statement statement = connection.createStatement()) {
+
+            // Execute update query
+            int rowsAffected = statement.executeUpdate(query);
+
+            // Check if update happened
+            if (rowsAffected > 0) {
+                System.out.println("Salary updated successfully!");
+            } else {
+                System.out.println("Employee not found.");
+            }
+
+        } catch (SQLException e) {
+            throw new PayrollException("Error updating salary using Statement", e);
+        }
+    }
 }
